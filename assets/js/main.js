@@ -12,15 +12,22 @@ let cle = document.getElementById('cle');
 
 button.addEventListener('click',isValid);
 
+let regexInput = new RegExp('\\d{13}');
 
 function isValid (){
+    sexe.innerText="";
+    year.innerText="";
+    month.innerText="";
+    departNumber.innerText="";
+    communeNumber.innerText="";
+    acteNumber.innerText="";
+    cle.innerText="";
     let valid=true;
-    let secNumChaine=secNum.value.toString();
     let secNumTab=[];
-    if(secNum.value.length!=13){message.innerText="Le numéro doit être de 13 chiffres"}
+    if(!regexInput.test(secNum.value)){message.innerText="Le numéro doit être de 13 chiffres";}
     else{
-    for (i=0;i<secNumChaine.length;i++){
-        let chiffre = parseInt(secNumChaine[i]);
+        for (i=0;i<secNum.value.length;i++){
+        let chiffre = parseInt(secNum.value[i]);
         secNumTab.push(chiffre);}
 
     //Premiere verif (sexe) - index 0
@@ -28,52 +35,49 @@ function isValid (){
         valid=false;
         sexe.innerText=secNumTab[0].toString()+' ';
         sexe.style.color="red";}
-        else{sexe.innerText=secNumTab[0].toString()+' ';
-            sexe.style.color="green";}
+        else{sexe.style.color="green";}
 
     //Deuxieme verif (annee) - index 1-2 => RAS
-    year.innerText=secNumTab[1].toString()+secNumTab[2].toString()+' ';
     year.style.color="green";
 
     //Troisieme verif (mois) - index 3-4
     let mois = 10*secNumTab[3]+secNumTab[4]
-    if (mois>12){
-        valid=false;
-        month.innerText=affiche(mois)+' ';
-        month.style.color="red";}
-        else{
-            month.innerText=affiche(mois)+' ';
-            month.style.color="green";}
-
+    if (mois>12){valid=false;
+                month.style.color="red";}
+            else{month.style.color="green";}
+            
     //Quatrieme verif (departement) - index 5-6
     let departement = 10*secNumTab[5]+secNumTab[6];
-    if(departement>95){
-        valid=false;
-        departNumber.style.color="red";
-        departNumber.innerText=affiche(departement)+' ';}
-        else{departNumber.innerText=affiche(departement)+' ';
-        departNumber.style.color="green";}
+    if(departement>95){valid=false;
+                        departNumber.style.color="red";}
+                    else{ departNumber.style.color="green";}
 
     //Cinquieme verif (commune) - index 7-8-9 ==> RAS
     let commune =   secNumTab[7]*100 + secNumTab[8]*10+secNumTab[9];
-    communeNumber.innerText=afficheCentaine(commune)+' ';
+    
     communeNumber.style.color="green";
 
     //Sixieme verif (acte de naissance) - index 10-11-12 ==> RAS
     let acte =   secNumTab[10]*100 + secNumTab[11]*10+secNumTab[12];
-    acteNumber.innerText=afficheCentaine(acte)+' ';
+    
     acteNumber.style.color="green";
 
     //Sixieme verif (NIR) 
-    if(keyEntered.value!=nirCalculate(secNum.value)){
+    if(parseInt(keyEntered.value)!=nirCalculate(parseInt(secNum.value))){
         valid=false;
-        cle.innerText=keyEntered.value;
         cle.style.color="red";}
-        else{cle.innerText=keyEntered.value;
-            cle.style.color="green";}
+        else{cle.style.color="green";}
 
+    //Affichage
     if (valid){message.innerText="Valide"}
-    else{message.innerText="Non valide"}
+    else{message.innerText="Non valide";
+        sexe.innerText=secNumTab[0].toString()+' ';
+        year.innerText=secNumTab[1].toString()+secNumTab[2].toString()+' ';
+        month.innerText=affiche(mois)+' ';
+        departNumber.innerText=affiche(departement)+' ';
+        communeNumber.innerText=afficheCentaine(commune)+' ';
+        acteNumber.innerText=afficheCentaine(acte)+' ';
+        cle.innerText=keyEntered.value;}
 }
 }
 
@@ -85,15 +89,15 @@ function nirCalculate (number){
     return key;
 }    
 
-function affiche(mois){
-if (mois<10){return '0'+mois.toString();}
-else return mois.toString();
+function affiche(number){
+if (number<10){return '0'+number.toString();}
+else return number.toString();
 }
 
-function afficheCentaine(item){
-    if(item<10){
+function afficheCentaine(number){
+    if(number<10){
         return '00'+item.toString();}
-        else if (item<100){
-            return '0'+item.toString();}
-            else{return item.toString();}
+        else if (number<100){
+            return '0'+number.toString();}
+            else{return number.toString();}
 }
