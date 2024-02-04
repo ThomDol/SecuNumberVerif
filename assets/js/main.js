@@ -13,8 +13,10 @@ let cle = document.getElementById('cle');
 button.addEventListener('click',isValid);
 
 let regexInput = new RegExp('\\d{13}');
+let regexKey = new RegExp('\\d{2}')
 
 function isValid (){
+    message.innerText="";
     sexe.innerText="";
     year.innerText="";
     month.innerText="";
@@ -24,8 +26,12 @@ function isValid (){
     cle.innerText="";
     let valid=true;
     let secNumTab=[];
-    if(!regexInput.test(secNum.value)){message.innerText="Le numéro doit être de 13 chiffres";}
-    else{
+    console.log(secNum.value);
+    console.log(regexInput.test(secNum.value));
+    console.log(secNum.value.length);
+    if(!regexInput.test(secNum.value) || secNum.value.length!=13){message.innerText="Le numéro doit être de 13 chiffres";}
+    else if(!regexKey.test(keyEntered.value) || keyEntered.value.length!=2){message.innerText="La clé doit avoir 2 chiffres";}
+    else{    
         for (i=0;i<secNum.value.length;i++){
         let chiffre = parseInt(secNum.value[i]);
         secNumTab.push(chiffre);}
